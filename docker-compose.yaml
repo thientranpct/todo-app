@@ -1,0 +1,14 @@
+version: "3"
+
+services:
+  db:
+    image: postgres
+    restart: no
+    environment:
+      - POSTGRES_PASSWORD=Aa1234
+      - POSTGRES_DB=todo_app
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432

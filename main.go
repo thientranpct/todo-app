@@ -25,5 +25,9 @@ func main() {
 		return c.String(http.StatusOK, "Todo app")
 	})
 	e.POST("items", todotrpt.HandleCreateItem(db))
+	e.GET("items", todotrpt.HandleListItem(db))
+	e.PUT("items/:id", todotrpt.HandleUpdateItem(db))
+	e.GET("items/:id", todotrpt.HandleFindItem(db))
+	e.DELETE("items/:id", todotrpt.HandleDeleteItem(db))
 	e.Logger.Fatal(e.Start(":1323"))
 }

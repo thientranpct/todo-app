@@ -6,9 +6,9 @@ import (
 )
 
 var (
-	ErrTitleCannotBeBlank       = errors.New("title can not be blank")
-	ErrItemNotFound             = errors.New("item not found")
-	ErrCannotUpdateFinishedItem = errors.New("can not update finished item")
+	ErrTitleCannotBeBlank        = errors.New("title can not be blank")
+	ErrItemNotFound              = errors.New("item not found")
+	ErrCannotUpdateCompletedItem = errors.New("can not update completed item")
 )
 
 type TodoItem struct {
@@ -18,6 +18,8 @@ type TodoItem struct {
 	CreatedAt *time.Time `json:"created_at" gorm:"column:created_at;"`
 	UpdatedAt *time.Time `json:"updated_at" gorm:"column:updated_at;"`
 }
+
+func (TodoItem) TableName() string { return "todo_items" }
 
 func (item TodoItem) Validate() error {
 	if item.Title == "" {

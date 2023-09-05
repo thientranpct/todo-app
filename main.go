@@ -5,8 +5,13 @@ import (
 
 	todomodel "todo-app/module/item/model"
 	todotrpt "todo-app/module/item/transport"
+	usermodel "todo-app/module/user/model"
+	usertrpt "todo-app/module/user/transport"
 
+	"github.com/golang-jwt/jwt/v5"
+	echojwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -19,15 +24,37 @@ func main() {
 		panic("Failed to connect database")
 	}
 	db.AutoMigrate(&todomodel.TodoItem{})
+	db.AutoMigrate(&usermodel.User{})
 	e := echo.New()
+	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
 
 	e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Todo app")
 	})
-	e.POST("items", todotrpt.HandleCreateItem(db))
-	e.GET("items", todotrpt.HandleListItem(db))
-	e.PUT("items/:id", todotrpt.HandleUpdateItem(db))
-	e.GET("items/:id", todotrpt.HandleFindItem(db))
-	e.DELETE("items/:id", todotrpt.HandleDeleteItem(db))
+
+	restricted := e.Group("")
+
+	// Configure middleware with the custom claims type
+	config := echojwt.Config{
+		NewClaimsFunc: func(c echo.Context) jwt.Claims {
+			return new(usermodel.JwtCustomClaims)
+		},
+		SigningKey: []byte("secret"),
+	}
+	restricted.Use(echojwt.WithConfig(config))
+	restricted.POST("items", todotrpt.HandleCreateItem(db))
+	restricted.GET("items", todotrpt.HandleListItem(db))
+	restricted.PUT("items/:id", todotrpt.HandleUpdateItem(db))
+	restricted.GET("items/:id", todotrpt.HandleFindItem(db))
+	restricted.DELETE("items/:id", todotrpt.HandleDeleteItem(db))
+
+	restricted.POST("users", usertrpt.HandleCreateUser(db))
+	restricted.GET("users", usertrpt.HandleListUser(db))
+	restricted.PUT("users/:id", usertrpt.HandleUpdateUser(db))
+	restricted.GET("users/:id", usertrpt.HandleFindUser(db))
+	restricted.DELETE("users/:id", usertrpt.HandleDeleteUser(db))
+
+	e.POST("login", usertrpt.HandleLogin(db))
 	e.Logger.Fatal(e.Start(":1323"))
 }

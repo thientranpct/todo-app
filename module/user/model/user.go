@@ -26,6 +26,11 @@ type JwtCustomClaims struct {
 	jwt.RegisteredClaims
 }
 
+type LoginPayload struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
 func (User) TableName() string { return "users" }
 
 func (user User) Validate() error {

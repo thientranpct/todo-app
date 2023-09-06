@@ -11,9 +11,19 @@ import (
 	"gorm.io/gorm"
 )
 
+// ShowAccount godoc
+//
+//	@Summary		login
+//	@Description	Login
+//	@Tags			auth
+//	@Accept			json
+//	@Produce		json
+//	@Param			LoginPayload		body		usermodel.LoginPayload true	"LoginPayload"
+//	@Success		200			{object}	usermodel.JwtCustomClaims
+//	@Router			/login [post]
 func HandleLogin(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		var dataItem usermodel.User
+		var dataItem usermodel.LoginPayload
 
 		if err := c.Bind(&dataItem); err != nil {
 			return err

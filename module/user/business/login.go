@@ -26,7 +26,7 @@ func NewLoginBiz(store LoginStorage) *findBiz {
 	return &findBiz{store: store}
 }
 
-func (biz *findBiz) Login(ctx context.Context, condition map[string]interface{}, data *usermodel.User) (string, error) {
+func (biz *findBiz) Login(ctx context.Context, condition map[string]interface{}, data *usermodel.LoginPayload) (string, error) {
 	user, err := biz.store.FindUser(ctx, condition)
 
 	if err != nil {
@@ -43,8 +43,8 @@ func (biz *findBiz) Login(ctx context.Context, condition map[string]interface{},
 
 	// Set custom claims
 	claims := &usermodel.JwtCustomClaims{
-		data.Email,
-		jwt.RegisteredClaims{
+		Email: data.Email,
+		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 72)),
 		},
 	}

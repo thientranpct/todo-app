@@ -1,7 +1,9 @@
 package main
 
 import (
+	"log"
 	"net/http"
+	"os"
 
 	todomodel "todo-app/module/item/model"
 	todotrpt "todo-app/module/item/transport"
@@ -17,6 +19,8 @@ import (
 	"gorm.io/gorm"
 
 	_ "todo-app/docs"
+
+	"github.com/joho/godotenv"
 )
 
 //	@title			Swagger API Todo app
@@ -31,14 +35,28 @@ import (
 //	@license.name	Apache 2.0
 //	@license.url	http://www.apache.org/licenses/LICENSE-2.0.html
 
-//	@host						localhost:1323
+// @host						localhost:1323
 //
-//	@securityDefinitions.apiKey	JWT
-//	@in							header
-//	@name						Authorization
+// @securityDefinitions.apiKey	JWT
+// @in							header
+// @name						Authorization
 func main() {
-	dsn := "host=localhost user=postgres password=Aa1234 dbname=todo_app port=5432 sslmode=disable TimeZone=Asia/Saigon"
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	env := os.Getenv("ENV")
+	if "production" != env {
+		err := godotenv.Load()
+		if err != nil {
+			log.Fatal("Error loading .env file")
+		}
+	}
+	dbHost := os.Getenv("DB_HOST")
+	dbUser := os.Getenv("DB_USER")
+	dbPassword := os.Getenv("DB_PASSWORD")
+	dbName := os.Getenv("DB_NAME")
+	dbPort := os.Getenv("DB_PORT")
+	dbString := "host=" + dbHost + " user=" + dbUser + " password=" + dbPassword + " dbname=" + dbName + " port=" + dbPort + " sslmode=disable TimeZone=Asia/Saigon"
+	log.Printf("DB_STRING: %s", dbString)
+	// dsn := "host=localhost user=postgres password=Aa1234 dbname=todo_app port=5432 sslmode=disable TimeZone=Asia/Saigon"
+	db, err := gorm.Open(postgres.Open(dbString), &gorm.Config{})
 
 	if err != nil {
 		panic("Failed to connect database")

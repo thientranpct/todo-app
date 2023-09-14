@@ -1,14 +1,45 @@
 version: "3"
 
 services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: todo_app
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - ENV=production
+      - DB_HOST=db
+      - DB_USER=postgres
+      - DB_PASSWORD=Aa1234
+      - DB_NAME=todo_app
+      - DB_PORT=5432
+    restart: no
+    ports:
+      - 1323:1323
+    networks:
+      - todo_app_net
+
   db:
     image: postgres
+    container_name: todo_app_db
     restart: no
     environment:
       - POSTGRES_PASSWORD=Aa1234
       - POSTGRES_DB=todo_app
       - PGDATA=/var/lib/postgresql/data/pgdata
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     volumes:
       - ./data:/var/lib/postgresql/data
     ports:
       - 5432:5432
+    networks:
+      - todo_app_net
+networks:
+  todo_app_net:

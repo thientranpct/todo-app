@@ -14,11 +14,11 @@ var (
 )
 
 type User struct {
-	Id        int        `json:"id" gorm:"column:id"`
+	Id        int        `json:"id" gorm:"column:id" swaggerignore:"true"`
 	Email     string     `json:"email" gorm:"column:email"`
 	Password  string     `json:"password" gorm:"column:password"`
-	CreatedAt *time.Time `json:"created_at" gorm:"column:created_at;"`
-	UpdatedAt *time.Time `json:"updated_at" gorm:"column:updated_at;"`
+	CreatedAt *time.Time `json:"created_at" gorm:"column:created_at;" swaggerignore:"true"`
+	UpdatedAt *time.Time `json:"updated_at" gorm:"column:updated_at;" swaggerignore:"true"`
 }
 
 type JwtCustomClaims struct {

@@ -13,6 +13,18 @@ import (
 	"gorm.io/gorm"
 )
 
+// UpdateUser godoc
+//
+//	@Summary		Update an user
+//	@Description	Update an user
+//	@Tags			users
+//	@Accept			json
+//	@Produce		json
+//	@Param			id		path		int				true	"User ID"
+//	@Param			Payload	body		usermodel.User	true	"Payload"
+//	@Success		200		{object}	usermodel.User
+//	@Router			/api/users/{id} [put]
+//	@Security		JWT
 func HandleUpdateUser(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		id, err := strconv.Atoi(c.Param("id"))

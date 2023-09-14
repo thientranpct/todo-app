@@ -13,6 +13,18 @@ import (
 	"gorm.io/gorm"
 )
 
+// UpdateItem godoc
+//
+//	@Summary		Update item
+//	@Description	Update item
+//	@Tags			items
+//	@Accept			json
+//	@Produce		json
+//	@Param			id		path		int					true	"Item ID"
+//	@Param			Payload	body		todomodel.TodoItem	true	"Payload"
+//	@Success		200		{object}	todomodel.TodoItem
+//	@Router			/api/items/{id} [put]
+//	@Security		JWT
 func HandleUpdateItem(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		id, err := strconv.Atoi(c.Param("id"))

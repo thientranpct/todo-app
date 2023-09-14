@@ -11,6 +11,17 @@ import (
 	"gorm.io/gorm"
 )
 
+// CreateItem godoc
+//
+//	@Summary		Add a todo item
+//	@Description	Add a todo item
+//	@Tags			items
+//	@Accept			json
+//	@Produce		json
+//	@Param			Payload	body		todomodel.TodoItem	true	"Payload"
+//	@Success		200		{object}	todomodel.TodoItem
+//	@Router			/api/items [post]
+//	@Security		JWT
 func HandleCreateItem(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		var dataItem todomodel.TodoItem

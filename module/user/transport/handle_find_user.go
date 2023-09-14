@@ -21,6 +21,7 @@ import (
 //	@Param			id	path		int	true	"User ID"
 //	@Success		200	{object}	usermodel.User
 //	@Router			/api/users/{id} [get]
+//	@Security		JWT
 func HandleFindUser(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		id, err := strconv.Atoi(c.Param("id"))

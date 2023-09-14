@@ -11,6 +11,17 @@ import (
 	"gorm.io/gorm"
 )
 
+// DeleteItem godoc
+//
+//	@Summary		Delete a item
+//	@Description	Delete by ID
+//	@Tags			items
+//	@Accept			json
+//	@Produce		json
+//	@Param			id	path	int	true	"Item ID"
+//	@Success		200
+//	@Router			/api/items/{id} [delete]
+//	@Security		JWT
 func HandleDeleteItem(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		id, err := strconv.Atoi(c.Param("id"))

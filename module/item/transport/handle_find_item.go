@@ -12,6 +12,7 @@ import (
 )
 
 // ShowAccount godoc
+//
 //	@Summary		Show a todo item
 //	@Description	get by ID
 //	@Tags			items
@@ -20,6 +21,7 @@ import (
 //	@Param			id	path		int	true	"Item ID"
 //	@Success		200	{object}	todomodel.TodoItem
 //	@Router			/api/items/{id} [get]
+//	@Security		JWT
 func HandleFindItem(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		id, err := strconv.Atoi(c.Param("id"))

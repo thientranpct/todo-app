@@ -72,7 +72,7 @@ func main() {
 	})
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
 
-	restricted := e.Group("api")
+	restricted := e.Group("/api")
 
 	// Configure middleware with the custom claims type
 	config := echojwt.Config{
@@ -82,18 +82,19 @@ func main() {
 		SigningKey: []byte("secret"),
 	}
 	restricted.Use(echojwt.WithConfig(config))
-	restricted.POST("items", todotrpt.HandleCreateItem(db))
-	restricted.GET("items", todotrpt.HandleListItem(db))
-	restricted.PUT("items/:id", todotrpt.HandleUpdateItem(db))
-	restricted.GET("items/:id", todotrpt.HandleFindItem(db))
-	restricted.DELETE("items/:id", todotrpt.HandleDeleteItem(db))
+	restricted.POST("/items", todotrpt.HandleCreateItem(db))
+	restricted.GET("/items", todotrpt.HandleListItem(db))
+	restricted.PUT("/items/:id", todotrpt.HandleUpdateItem(db))
+	restricted.GET("/items/:id", todotrpt.HandleFindItem(db))
+	restricted.DELETE("/items/:id", todotrpt.HandleDeleteItem(db))
 
-	restricted.POST("users", usertrpt.HandleCreateUser(db))
-	restricted.GET("users", usertrpt.HandleListUser(db))
-	restricted.PUT("users/:id", usertrpt.HandleUpdateUser(db))
-	restricted.GET("users/:id", usertrpt.HandleFindUser(db))
-	restricted.DELETE("users/:id", usertrpt.HandleDeleteUser(db))
+	// restricted.POST("users", usertrpt.HandleCreateUser(db))
+	restricted.GET("/users", usertrpt.HandleListUser(db))
+	restricted.PUT("/users/:id", usertrpt.HandleUpdateUser(db))
+	restricted.GET("/users/:id", usertrpt.HandleFindUser(db))
+	restricted.DELETE("/users/:id", usertrpt.HandleDeleteUser(db))
 
-	e.POST("login", usertrpt.HandleLogin(db))
+	e.POST("/login", usertrpt.HandleLogin(db))
+	e.POST("/users", usertrpt.HandleCreateUser(db))
 	e.Logger.Fatal(e.Start(":1323"))
 }

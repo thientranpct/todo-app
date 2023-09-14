@@ -6,15 +6,9 @@ definitions:
     type: object
   todomodel.TodoItem:
     properties:
-      created_at:
-        type: string
-      id:
-        type: integer
       status:
         type: string
       title:
-        type: string
-      updated_at:
         type: string
     type: object
   usermodel.JwtCustomClaims:
@@ -57,15 +51,9 @@ definitions:
     type: object
   usermodel.User:
     properties:
-      created_at:
-        type: string
       email:
         type: string
-      id:
-        type: integer
       password:
-        type: string
-      updated_at:
         type: string
     type: object
 host: localhost:1323
@@ -82,7 +70,51 @@ info:
   title: Swagger API Todo app
   version: "1.0"
 paths:
+  /api/items:
+    post:
+      consumes:
+      - application/json
+      description: Add a todo item
+      parameters:
+      - description: Payload
+        in: body
+        name: Payload
+        required: true
+        schema:
+          $ref: '#/definitions/todomodel.TodoItem'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/todomodel.TodoItem'
+      security:
+      - JWT: []
+      summary: Add a todo item
+      tags:
+      - items
   /api/items/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete by ID
+      parameters:
+      - description: Item ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      security:
+      - JWT: []
+      summary: Delete a item
+      tags:
+      - items
     get:
       consumes:
       - application/json
@@ -100,10 +132,84 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/todomodel.TodoItem'
+      security:
+      - JWT: []
       summary: Show a todo item
       tags:
       - items
+    put:
+      consumes:
+      - application/json
+      description: Update item
+      parameters:
+      - description: Item ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Payload
+        in: body
+        name: Payload
+        required: true
+        schema:
+          $ref: '#/definitions/todomodel.TodoItem'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/todomodel.TodoItem'
+      security:
+      - JWT: []
+      summary: Update item
+      tags:
+      - items
+  /api/users:
+    post:
+      consumes:
+      - application/json
+      description: Add an user
+      parameters:
+      - description: Payload
+        in: body
+        name: Payload
+        required: true
+        schema:
+          $ref: '#/definitions/usermodel.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/usermodel.User'
+      security:
+      - JWT: []
+      summary: Add an user
+      tags:
+      - users
   /api/users/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete by ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      security:
+      - JWT: []
+      summary: Delete an user
+      tags:
+      - users
     get:
       consumes:
       - application/json
@@ -121,7 +227,37 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/usermodel.User'
+      security:
+      - JWT: []
       summary: Show an user
+      tags:
+      - users
+    put:
+      consumes:
+      - application/json
+      description: Update an user
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Payload
+        in: body
+        name: Payload
+        required: true
+        schema:
+          $ref: '#/definitions/usermodel.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/usermodel.User'
+      security:
+      - JWT: []
+      summary: Update an user
       tags:
       - users
   /login:

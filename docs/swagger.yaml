@@ -165,30 +165,6 @@ paths:
       summary: Update item
       tags:
       - items
-  /api/users:
-    post:
-      consumes:
-      - application/json
-      description: Add an user
-      parameters:
-      - description: Payload
-        in: body
-        name: Payload
-        required: true
-        schema:
-          $ref: '#/definitions/usermodel.User'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/usermodel.User'
-      security:
-      - JWT: []
-      summary: Add an user
-      tags:
-      - users
   /api/users/{id}:
     delete:
       consumes:
@@ -282,6 +258,30 @@ paths:
       summary: login
       tags:
       - auth
+  /users:
+    post:
+      consumes:
+      - application/json
+      description: Add an user
+      parameters:
+      - description: Payload
+        in: body
+        name: Payload
+        required: true
+        schema:
+          $ref: '#/definitions/usermodel.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/usermodel.User'
+      security:
+      - JWT: []
+      summary: Add an user
+      tags:
+      - users
 securityDefinitions:
   JWT:
     in: header

@@ -20,7 +20,7 @@ import (
 //	@Produce		json
 //	@Param			Payload	body		usermodel.User	true	"Payload"
 //	@Success		200		{object}	usermodel.User
-//	@Router			/api/users [post]
+//	@Router			/users [post]
 //	@Security		JWT
 func HandleCreateUser(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {

@@ -11,7 +11,7 @@ import (
 	"gorm.io/gorm"
 )
 
-// ShowAccount godoc
+// FindUser godoc
 //
 //	@Summary		Show an user
 //	@Description	get by ID
